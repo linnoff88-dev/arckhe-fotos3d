@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>fotos3d — turn ordinary room photos into a 360° room</title>
+<meta content="fotos3d: 4 to 6 regular photos of a space (or just a description) become a photorealistic, equirectangular 360° panorama that stays true to the property, with a viewer and web interface. No 360 camera, no scan." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --bg:#0c0c10; --bg2:#14141b; --card:#16161e; --line:#272730;
+    --txt:#e9e9ee; --mut:#9a9aa6; --amb:#E2A23B; --amb2:#f0c070; --sky:#38bdf8; --pro:#cbd5e1;
+    color-scheme:dark;
+  }
+  body.light{
+    --bg:#f6f7f9; --bg2:#eceef2; --card:#ffffff; --line:#e1e3ea;
+    --txt:#1a1a22; --mut:#5b5b68; --amb:#b9791d; --amb2:#a16207; --sky:#0369a1; --pro:#b45309;
+    color-scheme:light;
+  }
+  body.light .hero .glow{opacity:.5}
+  body.light pre{background:#0e0e14;color:#d6d6e0}
+  body.light pre .c{color:#8a8a98}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.65 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:Sora,sans-serif;line-height:1.15;margin:0}
+  a{color:var(--amb);text-decoration:none}
+  code,pre{font-family:"JetBrains Mono",monospace}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 22px}
+  .mut{color:var(--mut)} .amb{color:var(--amb)}
+  .chip{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--amb);font-weight:600;font-family:Sora}
+  nav{position:sticky;top:0;z-index:30;backdrop-filter:blur(12px);background:rgba(12,12,16,.78);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;gap:22px;height:60px}
+  nav .brand{display:flex;align-items:center;gap:8px;font-family:Sora;font-weight:800;letter-spacing:-.02em;color:var(--amb)}
+  nav .brand .emoji{font-size:1.25rem}
+  nav .sep{color:var(--mut);opacity:.45}
+  nav .inema{color:var(--sky);font-weight:600;font-size:.88rem;font-family:Sora}
+  nav .inema:hover{filter:brightness(1.15)}
+  nav .pro{color:var(--pro);font-weight:600;font-size:.88rem;font-family:Sora}
+  nav .pro:hover{filter:brightness(1.15)}
+  nav .clubpro{display:inline-flex;align-items:center;gap:6px}
+  nav .links{margin-left:auto;display:flex;align-items:center;gap:20px;font-size:.92rem}
+  nav .links a.sec{color:var(--mut)} nav .links a.sec:hover{color:var(--txt)}
+  .tgl{background:var(--bg2);border:1px solid var(--line);color:var(--txt);width:38px;height:38px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:1.05rem}
+  .tgl:hover{border-color:var(--amb)}
+  .btn{display:inline-block;background:var(--amb);color:#1a1206;font-weight:600;padding:.6em 1.05em;border-radius:10px;font-family:Sora}
+  .btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
+  @media(max-width:760px){nav .links a.sec{display:none}}
+  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+  .hero .glow{position:absolute;inset:-40% -20% auto auto;width:70%;height:600px;background:radial-gradient(closest-side,rgba(226,162,59,.22),transparent 70%);pointer-events:none}
+  .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding:74px 22px}
+  .hero h1{font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;letter-spacing:-.025em}
+  .hero p.lead{font-size:1.18rem;color:var(--mut);margin:1.1em 0 1.6em;max-width:34ch}
+  .hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .hero figure{margin:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 80px -30px #000}
+  .hero figure img{width:100%;display:block}
+  @media(max-width:780px){.hero .wrap{grid-template-columns:1fr;padding:48px 22px}}
+  section{padding:62px 0;border-bottom:1px solid var(--line)}
+  section h2{font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:800;letter-spacing:-.02em}
+  section .sub{color:var(--mut);margin:.6em 0 2em;max-width:62ch}
+  .grid{display:grid;gap:16px}
+  .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)} .g2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:820px){.g3,.g4{grid-template-columns:1fr 1fr}}
+  @media(max-width:540px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .card h3{font-size:1.05rem;margin-bottom:.4em}
+  .card p{color:var(--mut);font-size:.92rem;margin:0}
+  .num{display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border-radius:8px;background:rgba(226,162,59,.14);color:var(--amb);font-family:Sora;font-weight:800;font-size:.9rem;margin-bottom:.7em}
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+  .flow span{background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:.45em .9em;font-size:.85rem;font-family:Sora;font-weight:600}
+  .flow .arr{color:var(--amb);border:none;background:none;padding:0 .1em}
+  pre{background:#0a0a0e;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;font-size:.86rem;line-height:1.6;color:#d6d6e0}
+  pre .c{color:#6f6f7c} pre .k{color:var(--amb2)} pre .s{color:#9ece6a}
+  .step{display:grid;grid-template-columns:46px 1fr;gap:16px;margin-bottom:26px}
+  .step .b{width:46px;height:46px;border-radius:12px;background:var(--amb);color:#1a1206;font-family:Sora;font-weight:800;font-size:1.25rem;display:flex;align-items:center;justify-content:center}
+  .step h3{font-size:1.12rem;margin-bottom:.3em}
+  .step p{color:var(--mut);margin:.2em 0 .7em}
+  .ex{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:680px){.ex{grid-template-columns:1fr}}
+  .ex figure{margin:0;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+  .ex figure img{width:100%;display:block}
+  .ex figcaption{padding:12px 14px;font-size:.88rem;color:var(--mut);background:var(--card)}
+  .phase{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
+  .phase:last-child{border:none}
+  .phase .tag{flex:0 0 92px;font-family:Sora;font-weight:800;color:var(--amb)}
+  .phase .d strong{display:block;margin-bottom:.2em}
+  .phase .d span{color:var(--mut);font-size:.92rem}
+  footer{padding:46px 0;text-align:center;color:var(--mut);font-size:.9rem}
+  .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.3em .8em;font-size:.78rem;color:var(--mut);margin:0 4px}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:10px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+  th{color:var(--mut);font-weight:600;font-family:Sora;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em}
+  .tbl{overflow-x:auto}
+</style>
+<link href="https://inematds.github.io/fotos3d/guia/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/fotos3d/guia/en/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/fotos3d/guia/es/" hreflang="es" rel="alternate"/></head>
+<body><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="./" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../es/" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<nav><div class="wrap">
+<a class="brand" href="#top"><span class="emoji">🏠</span> fotos3d</a>
+<span class="sep">|</span>
+<span class="clubpro">
+<a class="inema" href="https://inema.club" rel="noopener" target="_blank">INEMA.CLUB</a>
+<span class="sep">-</span>
+<a class="pro" href="https://inema.pro" rel="noopener" target="_blank">PRO</a>
+</span>
+<div class="links">
+<a class="sec" href="#oque">What it is</a>
+<a class="sec" href="#fluxo">How it works</a>
+<a class="sec" href="#guia">User Guide</a>
+<a class="sec" href="#exemplos">Examples</a>
+<a class="sec" href="#roadmap">Roadmap</a>
+<button aria-label="Toggle theme" class="tgl" id="themeToggle" title="Toggle theme">🌙</button>
+<a class="btn" href="https://github.com/inematds/fotos3d" rel="noopener" target="_blank">GitHub</a>
+</div>
+</div></nav>
+<header class="hero" id="top">
+<div class="glow"></div>
+<div class="wrap">
+<div>
+<span class="chip">Real Estate · AI · 360°</span>
+<h1>Everyday photos of a room become a room in <span class="amb">360°</span></h1>
+<p class="lead">Four to six regular photos of the same room, or just a text description, become a photorealistic equirectangular panorama you can rotate like a virtual tour. No 360 camera, scan, or 3D software needed.</p>
+<div class="cta">
+<a class="btn" href="#guia">Start the guide</a>
+<a class="btn ghost" href="https://github.com/inematds/fotos3d" rel="noopener" target="_blank">View on GitHub</a>
+</div>
+</div>
+<figure><img alt="Room reconstructed in 360° from regular photos" src="../assets/hero.jpg"/></figure>
+</div>
+</header>
+<section id="oque"><div class="wrap">
+<span class="chip">What it is</span>
+<h2>AI reconstruction of an entire space</h2>
+<p class="sub">The AI understands how the photos connect (the same sofa in two photos, the same window from two angles) and reconstructs the room as a single space in a 2:1 format at 4096×2048, ready for any 360° viewer.</p>
+<div class="grid g3">
+<div class="card"><h3>🏠 True to the property</h3><p>Preserves walls, doors, windows, furniture, and materials. Doesn't redesign or invent objects; each piece of furniture appears only once. What no photo shows is inferred conservatively.</p></div>
+<div class="card"><h3>✍️ Or just a subject</h3><p>No photos? Describe the room in text. AI creates five consistent photos of the same space and then assembles the 360° panorama. Useful for concepts, previews, and content.</p></div>
+<div class="card"><h3>🔍 Checked before delivery</h3><p>Exact 2:1 ratio, minimum resolution of 4096×2048, score seam edges, automatic regeneration if the seam fails, and final smoothing. Everything is included in the report.</p></div>
+</div>
+</div></section>
+<section id="fluxo"><div class="wrap">
+<span class="chip">How it works</span>
+<h2>From a batch of photos to a panorama in five steps</h2>
+<p class="sub">It's an AI reconstruction, not a measurement. It's suitable for real estate marketing, previews, virtual tours, and input for AI video. It doesn't replace a LiDAR scan.</p>
+<div class="flow">
+<span>Photos or subject</span><span class="arr">→</span>
+<span>Vision understands the room</span><span class="arr">→</span>
+<span>Conservative prompt</span><span class="arr">→</span>
+<span>2:1 image model with references</span><span class="arr">→</span>
+<span>Checks + stitching</span><span class="arr">→</span>
+<span>PNG + 360 viewer</span>
+</div>
+<div class="grid g3" style="margin-top:26px">
+<div class="card"><div class="num">1</div><h3>Vision</h3><p>Gemini reads all the photos as a single space: walls, doors, windows, furniture, lighting, the estimated direction of each photo, and what's missing.</p></div>
+<div class="card"><div class="num">2</div><h3>Generation</h3><p>The photos are used as references for a model with native 2:1 support. The default is Flux 2 Klein via Freepik/Magnific; GPT Image 2 and Gemini via OpenRouter are alternatives.</p></div>
+<div class="card"><div class="num">3</div><h3>Control</h3><p>Corrected ratio, resampling up to 4096×2048, seam score (≤12 good, ≤30 acceptable, &gt;30 visible), one automatic regeneration, and crossfade at the edges.</p></div>
+</div>
+</div></section>
+<section id="pre"><div class="wrap">
+<span class="chip">Prerequisites</span>
+<h2>Python 3.12 and two API keys</h2>
+<p class="sub">Keys are read at runtime from your environment file. Nothing is copied into the project.</p>
+<div class="grid g3">
+<div class="card"><h3>Dependencies</h3><p>FastAPI, Pillow, NumPy, and httpx.</p><pre><span class="c"># in the project folder</span>
+<span class="k">pip</span> install -r requirements.txt</pre></div>
+<div class="card"><h3>Keys</h3><p>Freepik/Magnific for generation, Gemini for vision. OpenRouter is optional.</p><pre><span class="c"># ~/projetos/wifi/.env</span>
+MAGNIFIC_API_KEY=...
+GEMINI_API_KEY=...
+OPENROUTER_API_KEY=...  <span class="c"># optional</span></pre></div>
+<div class="card"><h3>Photos</h3><p>4 to 6 JPG/PNG photos of the same room from different angles. Good coverage is better than five nearly identical photos.</p><pre>sala/
+├── 01.jpg  <span class="c"># turn toward the sofa</span>
+├── 02.jpg  <span class="c"># turn toward the window</span>
+└── 03.jpg  <span class="c"># turn toward the entrance</span></pre></div>
+</div>
+</div></section>
+<section id="guia"><div class="wrap">
+<span class="chip">User Guide · Step by Step</span>
+<h2>Three ways to use it: command line, web interface, or skill</h2>
+<p class="sub">They all use the same engine. The output goes to <code>~/projetos/output/fotos3d/&lt;nome&gt;/</code> with the PNG, analysis, prompt, and report.</p>
+<div class="step"><div class="b">1</div><div>
+<h3>Generate a 360° panorama from a folder of photos</h3>
+<p>Choose a folder and give it a name. The default model is Flux 2 Klein (10 Magnific credits per image).</p>
+<pre><span class="k">cd</span> ~/projetos/fotos3d
+<span class="k">python3</span> -m engine.pipeline /caminho/fotos-da-sala --nome sala-302  <span class="c"># ~1 min</span></pre>
+</div></div>
+<div class="step"><div class="b">2</div><div>
+<h3>Or generate from a subject</h3>
+<p>Describe the room. The AI creates five consistent photos and follows the same workflow.</p>
+<pre><span class="k">python3</span> -m engine.pipeline --assunto <span class="s">"sala moderna, sofá cinza em L, janela grande com vista pro jardim, piso de madeira clara"</span> --nome demo</pre>
+</div></div>
+<div class="step"><div class="b">3</div><div>
+<h3>Choose a model and resolution</h3>
+<p>Switch models whenever you want more references or native 4K. The report records which one was used.</p>
+<pre><span class="k">python3</span> -m engine.pipeline sala/ --nome sala-302 --modelo gpt-image-2 --size 4K
+<span class="k">python3</span> -m engine.pipeline sala/ --nome sala-302 --modelo or-gemini-pro   <span class="c"># via OpenRouter</span></pre>
+</div></div>
+<div class="step"><div class="b">4</div><div>
+<h3>Use the web interface</h3>
+<p>Drag in the photos (or paste the folder path), choose a model with its cost shown beside it, track progress, and rotate the result in the built-in viewer. A gallery shows everything generated so far.</p>
+<pre><span class="k">uvicorn</span> web.app:app --port 8360   <span class="c"># open http://127.0.0.1:8360</span></pre>
+</div></div>
+<div class="step"><div class="b">5</div><div>
+<h3>Review in the 360 viewer</h3>
+<p>Always check in the viewer, not in the flat image: duplicated furniture, repeated doors, impossible walls, lighting jumps, or breaks at the turning point. If something is wrong, regenerate or switch models.</p>
+<pre><span class="c"># standalone viewer: open it in your browser and drag in the PNG</span>
+viewer/index.html
+<span class="c"># report with aspect ratio, resolution, and stitching score</span>
+~/projetos/output/fotos3d/sala-302/relatorio.json</pre>
+</div></div>
+<div class="step"><div class="b">6</div><div>
+<h3>Use as a skill in Claude Code</h3>
+<p>Install once, then ask in natural language: "use the property-360 skill on the photos in folder X".</p>
+<pre><span class="k">ln</span> -s ~/projetos/fotos3d/skill/property-360 ~/.claude/skills/property-360</pre>
+</div></div>
+<div class="tbl">
+<table>
+<tr><th>Model</th><th>Provider</th><th>native 2:1</th><th>Test result</th><th>Cost</th></tr>
+<tr><td><code>flux-klein</code> (default)</td><td>Freepik / Magnific</td><td>yes, resampled to 2048×1024</td><td>true equirectangular, highly faithful</td><td>10 credits</td></tr>
+<tr><td><code>gpt-image-2</code></td><td>Freepik / Magnific</td><td>yes, up to 4K, 16 refs</td><td>best quality: correct spherical projection, good stitching</td><td>~45 to 90 credits</td></tr>
+<tr><td><code>or-gemini-pro</code></td><td>OpenRouter</td><td>no (resampled from 16:9)</td><td>Plausible 360°, less faithful to details</td><td>~US$ 0,13</td></tr>
+<tr><td><code>or-gemini-flash</code></td><td>OpenRouter</td><td>no</td><td>tends to come out wide-angle, not 360</td><td>~US$ 0,04</td></tr>
+</table>
+</div>
+</div></section>
+<section id="exemplos"><div class="wrap">
+<span class="chip">Examples</span>
+<h2>Real room and imagined room</h2>
+<p class="sub">Above are the input photos. Below is the generated panorama (it looks stretched on a flat screen, but wraps around 360° in the viewer).</p>
+<div class="ex">
+<figure><img alt="Six photos of the Robie House room" src="../assets/ex-robie-fotos.jpg"/><figcaption>Input: 6 real photos of the living room at Robie House (Frank Lloyd Wright). Wikimedia Commons, photo by w_lemay, CC BY-SA 2.0.</figcaption></figure>
+<figure><img alt="Five photos generated per subject" src="../assets/ex-assunto-fotos.jpg"/><figcaption>Subject-based input: "modern living room, gray L-shaped sofa, large window, wood floor." Five consistent photos created by AI.</figcaption></figure>
+<figure><img alt="Robie House 360 panorama" src="../assets/ex-robie-360.jpg"/><figcaption>Flux 2 Klein output: fireplace, red bench, stained glass, and ceiling reconstructed as a single space, 4096×2048.</figcaption></figure>
+<figure><img alt="Robie House 360 panorama with GPT Image 2" src="../assets/ex-robie-gpt-360.jpg"/><figcaption>GPT Image 2 output: correct spherical projection (ceiling and floor curve), good seam. The quality option.</figcaption></figure>
+<figure><img alt="360 room panorama from a subject" src="../assets/ex-assunto-360.jpg"/><figcaption>Gemini Flash subject mode output: consistent with the photos, but with a narrower field of view. That's why Flux Klein is the default.</figcaption></figure>
+</div>
+</div></section>
+<section id="roadmap"><div class="wrap">
+<span class="chip">Roadmap</span>
+<h2>From one room to the whole property</h2>
+<p class="sub">Version 1.0 handles one room at a time. Future phases will connect the rooms into a tour.</p>
+<div class="phase"><div class="tag">v1.0 ✓</div><div class="d"><strong>One room, from photos or a subject</strong><span>Complete pipeline, checks, seam smoothing, web interface with viewer and gallery, property-360 skill.</span></div></div>
+<div class="phase"><div class="tag">Phase 2</div><div class="d"><strong>Entire Property</strong><span>One folder per room, batch generation, and a tour linking the panoramas with navigation arrows between the living room, kitchen, and bedrooms.</span></div></div>
+<div class="phase"><div class="tag">Phase 3</div><div class="d"><strong>Guided correction</strong><span>Inpainting seams and duplicate objects directly in the viewer, and exporting to 360 video with AI.</span></div></div>
+</div></section>
+<footer>
+<div class="wrap">
+<div class="pill">Python · FastAPI</div><div class="pill">Flux 2 Klein · Freepik</div><div class="pill">Gemini · OpenRouter</div><div class="pill">Pannellum</div>
+<p style="margin-top:18px">fotos3d · research and education project ·
+      <a href="https://github.com/inematds/fotos3d">inematds/fotos3d</a> ·
+      <a href="https://inema.club">INEMA.CLUB</a></p>
+</div>
+</footer>
+<script>
+  (function(){
+    var KEY='fotos3d-theme';
+    var b=document.body, t=document.getElementById('themeToggle');
+    if(localStorage.getItem(KEY)==='light'){ b.classList.add('light'); t.textContent='☀️'; }
+    t.addEventListener('click',function(){
+      var light=b.classList.toggle('light');
+      t.textContent=light?'☀️':'🌙';
+      localStorage.setItem(KEY, light?'light':'dark');
+    });
+  })();
+</script>
+</body>
+</html>
