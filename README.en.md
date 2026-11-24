@@ -8,7 +8,7 @@ Version 1.0.0. Takes 4–6 regular photos of the same room (or just a text descr
 
 ## 📖 User Guide
 
-Complete guide (landing page + step-by-step): **https://inematds.github.io/fotos3d/guia/en/**
+Complete guide (landing page + step-by-step): **https://linnoff88-dev.github.io/
 
 Based on the tutorial "Turn Multiple Property Photos Into a 360° Interior Image With Codex" (AI Video Lab). The difference: the part the tutorial leaves out (which image model generates the 360) is solved and tested here.
 

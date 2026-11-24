@@ -1,4 +1,4 @@
-﻿# fotos3d â€” fotos comuns de um cÃ´modo â†’ sala em 360Â°
+# fotos3d â€” fotos comuns de um cÃ´modo â†’ sala em 360Â°
 
 <div align="center">
   <img src="capa/logo.svg" alt="Arckhé AI" height="48" />
@@ -14,7 +14,7 @@ VersÃ£o 1.0.0. Pega 4â€“6 fotos normais de um mesmo ambiente (ou sÃ³ um
 
 ## ðŸ“– Guia de uso
 
-Guia completo (landing + passo a passo): **https://inematds.github.io/fotos3d/guia/**
+Guia completo (landing + passo a passo): **https://linnoff88-dev.github.io/
 
 Baseado no tutorial "Turn Multiple Property Photos Into a 360Â° Interior Image With Codex" (AI Video Lab). A diferenÃ§a: aqui a peÃ§a que o tutorial esconde (qual modelo de imagem gera a 360) estÃ¡ resolvida e testada.
 

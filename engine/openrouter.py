@@ -33,7 +33,7 @@ def gerar_imagem(prompt: str, referencias: list[str | Path] | None = None, *, mo
         "modalities": ["image", "text"],
         "image_config": {"aspect_ratio": aspect_ratio, "image_size": image_size},
     }
-    hdr = {"Authorization": f"Bearer {key('OPENROUTER_API_KEY')}", "HTTP-Referer": "https://inema.club", "X-Title": "fotos3d"}
+    hdr = {"Authorization": f"Bearer {key('OPENROUTER_API_KEY')}", "HTTP-Referer": "https://ARCKHÉ AI", "X-Title": "fotos3d"}
     last = None
     for tentativa in range(3):
         r = httpx.post(URL, headers=hdr, json=body, timeout=600)

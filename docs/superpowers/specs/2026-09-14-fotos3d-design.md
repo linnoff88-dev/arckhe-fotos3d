@@ -21,7 +21,7 @@ Receber 4–6 fotos normais de um mesmo cômodo e produzir UMA panorâmica equir
 2. **`web/`** — FastAPI + página única: upload/pasta, nome, modelo (com custo), Gerar, progresso por etapa, resultado em viewer 360 embutido (Pannellum via cdnjs), baixar, regenerar, galeria de saídas.
 3. **`viewer/index.html`** — viewer 360 standalone (arrasta o PNG ou `?src=`).
 4. **`skill/property-360/SKILL.md`** — skill Claude Code que descreve o fluxo e chama o pipeline; instalada em `~/.claude/skills/property-360`.
-5. **`guia/index.html`** — landing + guia (skill projetos-landing-guia), publicada no GitHub Pages `inematds/fotos3d`, e card no portal inema.club.
+5. **`guia/index.html`** — landing + guia (skill projetos-landing-guia), publicada no GitHub Pages `linnoff88-dev/fotos3d`, e card no portal ARCKHÉ AI.
 
 ## Fluxo
 
@@ -45,7 +45,7 @@ Tour multi-cômodo com hotspots; edição manual de costura; modelo 3D real.
 
 ## Convenções
 
-Saída em `~/projetos/output/fotos3d/`. Keys carregadas em runtime de `~/projetos/wifi/.env`. Repo `inematds/fotos3d`, autor `inematds`. Versão inicial `v1.0.0`.
+Saída em `~/projetos/output/fotos3d/`. Keys carregadas em runtime de `~/projetos/wifi/.env`. Repo `linnoff88-dev/fotos3d`, autor `linnoff88-dev`. Versão inicial `v1.0.0`.
 
 ## Modo 2: por assunto (adicionado 2026-09-14)
 

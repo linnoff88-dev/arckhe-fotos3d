@@ -8,7 +8,7 @@ Versión 1.0.0. Toma 4–6 fotos normales de un mismo ambiente (o solo una descr
 
 ## 📖 Guía de uso
 
-Guía completa (landing + paso a paso): **https://inematds.github.io/fotos3d/guia/es/**
+Guía completa (landing + paso a paso): **https://linnoff88-dev.github.io/
 
 Basado en el tutorial "Turn Multiple Property Photos Into a 360° Interior Image With Codex" (AI Video Lab). La diferencia: aquí ya está resuelta y probada la pieza que el tutorial oculta (qué modelo de imagen genera la 360).
 
