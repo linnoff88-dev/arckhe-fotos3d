@@ -1,4 +1,4 @@
-"""Suavização da costura esquerda↔direita de uma equiretangular (crossfade curto nas bordas)."""
+"""Suavizaçêo da costura esquerda↔direita de uma equiretangular (crossfade curto nas bordas)."""
 from __future__ import annotations
 
 import numpy as np
@@ -9,7 +9,7 @@ def suavizar_costura(img: Image.Image, fracao: float = 0.015) -> Image.Image:
     """Faz um crossfade entre as bordas para o wrap ficar contínuo.
 
     Roda a imagem meia volta (a costura vai pro centro), mistura uma faixa
-    estreita ao redor dela com pesos lineares e desfaz a rotação. Não corrige
+    estreita ao redor dela com pesos lineares e desfaz a rotaçêo. Nêo corrige
     geometria, só elimina a linha dura.
     """
     a = np.asarray(img.convert("RGB"), dtype=np.float32)

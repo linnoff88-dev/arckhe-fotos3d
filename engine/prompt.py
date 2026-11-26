@@ -1,4 +1,4 @@
-"""Etapa 2: da análise para o prompt de geração da panorâmica."""
+"""Etapa 2: da análise para o prompt de geraçêo da panorâmica."""
 from __future__ import annotations
 
 REGRAS = """Create ONE seamless 360-degree EQUIRECTANGULAR panorama (spherical projection, like a Google Street View / 360 camera export: 2:1 aspect ratio, full 360° horizontal × 180° vertical field of view) of the EXACT room shown in the reference photos. Camera at the center of the room at eye level (1.5 m). Horizon line exactly at the vertical middle; the floor fills the bottom half and stretches/curves toward the bottom edge, the ceiling fills the top half and converges toward the top edge; straight horizontal lines (skirting, ceiling edges, window sills) appear as gentle curves, vertical lines stay vertical. The four walls of the room must ALL be visible across the width — this is NOT a wide-angle photo, it is the whole room unwrapped.

@@ -1,4 +1,4 @@
-"""Carrega chaves em runtime dos .env padrão (nunca copia valores)."""
+"""Carrega chaves em runtime dos .env padrêo (nunca copia valores)."""
 from __future__ import annotations
 
 import os
@@ -27,5 +27,5 @@ def key(name: str) -> str:
     load_env()
     v = os.environ.get(name)
     if not v:
-        raise RuntimeError(f"{name} não encontrada nos .env padrão")
+        raise RuntimeError(f"{name} nêo encontrada nos .env padrêo")
     return v

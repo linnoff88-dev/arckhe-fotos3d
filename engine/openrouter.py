@@ -1,4 +1,4 @@
-"""Geração de imagem via OpenRouter (modelos Gemini Image / GPT Image) com referências."""
+"""Geraçêo de imagem via OpenRouter (modelos Gemini Image / GPT Image) com referências."""
 from __future__ import annotations
 
 import base64

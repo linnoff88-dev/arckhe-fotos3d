@@ -1,4 +1,4 @@
-"""Checagens de uma panorâmica equiretangular: proporção, resolução e costura."""
+"""Checagens de uma panorâmica equiretangular: proporçêo, resoluçêo e costura."""
 from __future__ import annotations
 
 import json
@@ -32,8 +32,8 @@ class Relatorio:
 def seam_score(img: Image.Image, faixa: int = 8) -> float:
     """Diferença média absoluta entre as `faixa` colunas mais à esquerda e mais à direita.
 
-    Numa equiretangular correta a borda direita continua na esquerda, então as
-    colunas extremas devem ser parecidas. 0 = perfeito. Compara em resolução
+    Numa equiretangular correta a borda direita continua na esquerda, entêo as
+    colunas extremas devem ser parecidas. 0 = perfeito. Compara em resoluçêo
     reduzida para tolerar ruído fino.
     """
     small = img.convert("RGB").resize((1024, 512))

@@ -1,4 +1,4 @@
-"""Cliente Gemini: visão (análise das fotos) e geração de imagem com referências."""
+"""Cliente Gemini: visêo (análise das fotos) e geraçêo de imagem com referências."""
 from __future__ import annotations
 
 import base64
@@ -57,7 +57,7 @@ def vision_json(prompt: str, imagens: list[str | Path], model: str = VISION_MODE
         try:
             out = _post(m, body, timeout=180)
             break
-        except RuntimeError as e:  # 503/404: tenta o próximo modelo de visão
+        except RuntimeError as e:  # 503/404: tenta o próximo modelo de visêo
             erro = e
     if out is None:
         raise erro
@@ -83,4 +83,4 @@ def gerar_imagem(prompt: str, referencias: list[str | Path] | None = None, *, mo
         for part in cand.get("content", {}).get("parts", []):
             if "inlineData" in part:
                 return Image.open(io.BytesIO(base64.b64decode(part["inlineData"]["data"])))
-    raise RuntimeError(f"Gemini não devolveu imagem: {json.dumps(out)[:600]}")
+    raise RuntimeError(f"Gemini nêo devolveu imagem: {json.dumps(out)[:600]}")

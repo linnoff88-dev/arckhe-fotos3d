@@ -10,16 +10,16 @@ PROMPT = """Você recebe várias fotos do MESMO cômodo, tiradas de pontos e dir
 Tarefa: reconstruir mentalmente o cômodo como um espaço único e responder em JSON com:
 {
  "tipo_comodo": "sala de estar | cozinha | quarto | ...",
- "estilo": "descrição curta do estilo e materiais dominantes",
- "iluminacao": "fonte, direção, temperatura de cor, hora do dia",
+ "estilo": "descriçêo curta do estilo e materiais dominantes",
+ "iluminacao": "fonte, direçêo, temperatura de cor, hora do dia",
  "paredes": [{"id":"N|E|S|W","descricao":"o que há nessa parede: janelas, portas, quadros, móveis encostados"}],
  "moveis": [{"nome":"...","posicao":"parede/canto/centro","aparece_nas_fotos":[1,2]}],
  "piso": "...", "teto": "...",
  "fotos": [{"indice":1,"direcao_estimada":"N|NE|E|...","descricao":"o que a foto mostra","ponto_de_vista":"de onde foi tirada"}],
  "areas_nao_vistas": "quais paredes/cantos nenhuma foto cobre e o que provavelmente há lá (inferência conservadora)",
- "descricao_360": "parágrafo único, em inglês, descrevendo o cômodo girando 360° a partir do centro, no sentido horário começando pela parede mais reconhecível; cite cada móvel, porta e janela UMA vez só, com posição relativa. Sem pessoas, sem texto."
+ "descricao_360": "parágrafo único, em inglês, descrevendo o cômodo girando 360° a partir do centro, no sentido horário começando pela parede mais reconhecível; cite cada móvel, porta e janela UMA vez só, com posiçêo relativa. Sem pessoas, sem texto."
 }
-As fotos estão numeradas na ordem em que foram enviadas (1 = primeira). Não invente objetos que não aparecem; para áreas não vistas, sugira apenas parede lisa ou continuação coerente do que existe."""
+As fotos estêo numeradas na ordem em que foram enviadas (1 = primeira). Nêo invente objetos que nêo aparecem; para áreas nêo vistas, sugira apenas parede lisa ou continuaçêo coerente do que existe."""
 
 
 def analisar(fotos: list[str | Path], salvar_em: str | Path | None = None) -> dict:

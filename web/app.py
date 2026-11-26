@@ -61,7 +61,7 @@ async def criar_job(nome: str = Form(...), modelo: str = Form(DEFAULT), size: st
     if pasta:
         p = Path(pasta).expanduser()
         if not p.is_dir():
-            raise HTTPException(400, f"pasta não encontrada: {pasta}")
+            raise HTTPException(400, f"pasta nêo encontrada: {pasta}")
         caminhos = sorted(x for x in p.iterdir() if x.suffix.lower() in {".jpg", ".jpeg", ".png", ".webp"})
     elif fotos:
         d = UPLOADS / nome

@@ -43,7 +43,7 @@ def rodar(*, nome: str, fotos: list[Path] | None = None, assunto: str | None = N
     if len(fotos) < 2:
         raise ValueError("preciso de pelo menos 2 fotos do cômodo")
 
-    progresso(f"Analisando {len(fotos)} fotos (visão)")
+    progresso(f"Analisando {len(fotos)} fotos (visêo)")
     analise = analisar(fotos, salvar_em=out / "analise.json")
     prompt = montar_prompt(analise)
     (out / "prompt.txt").write_text(prompt)
@@ -71,7 +71,7 @@ def rodar(*, nome: str, fotos: list[Path] | None = None, assunto: str | None = N
         progresso("Suavizando costura (crossfade nas bordas)")
         suavizar_costura(Image.open(final)).save(final)
         rel = checar(final, corrigir=False)
-        progresso(f"Costura após suavização: {rel.seam_status} ({rel.seam_score})")
+        progresso(f"Costura após suavizaçêo: {rel.seam_status} ({rel.seam_score})")
 
     relatorio = {"nome": nome, "modelo": modelo, "fotos": [str(f) for f in fotos], "panorama": str(final),
                  "checagem": {**json.loads(rel.to_json()), "seam_score_bruto": seam_bruto}, "segundos": round(time.time() - t0, 1),
@@ -84,7 +84,7 @@ def rodar(*, nome: str, fotos: list[Path] | None = None, assunto: str | None = N
 def main() -> None:
     ap = argparse.ArgumentParser(description="fotos3d — fotos ou assunto → panorâmica 360")
     ap.add_argument("entrada", nargs="?", help="pasta com fotos do cômodo")
-    ap.add_argument("--assunto", help="descrição do cômodo (gera as fotos)")
+    ap.add_argument("--assunto", help="descriçêo do cômodo (gera as fotos)")
     ap.add_argument("--nome", required=True)
     ap.add_argument("--modelo", default=DEFAULT)
     ap.add_argument("--size", default="2K", choices=["1K", "2K", "4K"])

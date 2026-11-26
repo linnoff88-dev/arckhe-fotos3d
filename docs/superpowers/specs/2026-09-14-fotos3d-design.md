@@ -4,19 +4,19 @@ Data: 2026-09-14. Baseado no tutorial "Turn Multiple Property Photos Into a 360�
 
 ## Objetivo
 
-Receber 4–6 fotos normais de um mesmo cômodo e produzir UMA panorâmica equiretangular 2:1 (alvo 4096×2048) fotorrealista, fiel ao imóvel, visualizável num viewer 360. Uso: marketing imobiliário, preview, insumo para vídeo IA. Não é scan fiel (LiDAR); áreas não fotografadas são inferidas pela IA.
+Receber 4–6 fotos normais de um mesmo cômodo e produzir UMA panorâmica equiretangular 2:1 (alvo 4096×2048) fotorrealista, fiel ao imóvel, visualizável num viewer 360. Uso: marketing imobiliário, preview, insumo para vídeo IA. Nêo é scan fiel (LiDAR); áreas nêo fotografadas sêo inferidas pela IA.
 
 ## O que o tutorial esconde
 
-"Codex" não gera imagem. O agente (Codex/Claude Code) faz visão + orquestração; a panorâmica sai de um modelo de imagem multi-referência (Nano Banana 2, Seedream, Flux Klein via API Freepik/Magnific; ou Gemini direto). A escolha do gerador é a decisão central e é validada por spike pago pequeno.
+"Codex" nêo gera imagem. O agente (Codex/Claude Code) faz visêo + orquestraçêo; a panorâmica sai de um modelo de imagem multi-referência (Nano Banana 2, Seedream, Flux Klein via API Freepik/Magnific; ou Gemini direto). A escolha do gerador é a decisêo central e é validada por spike pago pequeno.
 
 ## Componentes
 
 1. **`engine/`** (Python, sem MCP, chama API HTTP)
-   - `analyze.py` — visão (Gemini) sobre as fotos → JSON: layout, paredes, portas, janelas, móveis, iluminação, ordem angular estimada das fotos.
-   - `prompt.py` — JSON da sala → prompt de geração conservador (preservar, não redesenhar, sem pessoas/texto, 2:1, bordas contínuas).
+   - `analyze.py` — visêo (Gemini) sobre as fotos → JSON: layout, paredes, portas, janelas, móveis, iluminaçêo, ordem angular estimada das fotos.
+   - `prompt.py` — JSON da sala → prompt de geraçêo conservador (preservar, nêo redesenhar, sem pessoas/texto, 2:1, bordas contínuas).
    - `generate.py` — chama o modelo com as fotos como referência; polling; download.
-   - `checks.py` — proporção 2:1 exata (corrige por resize), resolução mínima (upscale se preciso), score de costura (borda esquerda × direita), relatório JSON.
+   - `checks.py` — proporçêo 2:1 exata (corrige por resize), resoluçêo mínima (upscale se preciso), score de costura (borda esquerda × direita), relatório JSON.
    - `pipeline.py` — CLI: `python -m engine.pipeline <pasta_fotos> --nome sala --modelo X` → salva em `~/projetos/output/fotos3d/<nome>-360.png` + `<nome>-relatorio.json`.
 2. **`web/`** — FastAPI + página única: upload/pasta, nome, modelo (com custo), Gerar, progresso por etapa, resultado em viewer 360 embutido (Pannellum via cdnjs), baixar, regenerar, galeria de saídas.
 3. **`viewer/index.html`** — viewer 360 standalone (arrasta o PNG ou `?src=`).
@@ -25,27 +25,27 @@ Receber 4–6 fotos normais de um mesmo cômodo e produzir UMA panorâmica equir
 
 ## Fluxo
 
-fotos → analyze (visão) → prompt → generate (multi-ref, 2:1) → checks (ratio, resolução, costura) → [se costura ruim: 1 retry com prompt reforçado] → salvar → viewer.
+fotos → analyze (visêo) → prompt → generate (multi-ref, 2:1) → checks (ratio, resoluçêo, costura) → [se costura ruim: 1 retry com prompt reforçado] → salvar → viewer.
 
 ## Erros
 
-- API sem crédito/auth → mensagem clara, sem retry infinito (máx. 2 tentativas, timeout 5 min por geração).
+- API sem crédito/auth → mensagem clara, sem retry infinito (máx. 2 tentativas, timeout 5 min por geraçêo).
 - Modelo devolve ratio ≠ 2:1 → corrigir por resize/crop central e registrar no relatório.
-- Costura ruim (score acima do limiar) → 1 regeneração; se persistir, entregar com aviso.
+- Costura ruim (score acima do limiar) → 1 regeneraçêo; se persistir, entregar com aviso.
 
 ## Testes
 
 - `checks.py` com testes unitários (imagens sintéticas: seam perfeita vs. quebrada, ratio errado).
-- Spike: mesma sala em 2–3 modelos; comparação visual no viewer; decisão registrada em `docs/api-freepik.md`.
+- Spike: mesma sala em 2–3 modelos; comparaçêo visual no viewer; decisêo registrada em `docs/api-freepik.md`.
 - Fim a fim com `samples/sala/`.
 
 ## Fora de escopo (fase 2)
 
-Tour multi-cômodo com hotspots; edição manual de costura; modelo 3D real.
+Tour multi-cômodo com hotspots; ediçêo manual de costura; modelo 3D real.
 
 ## Convenções
 
-Saída em `~/projetos/output/fotos3d/`. Keys carregadas em runtime de `~/projetos/wifi/.env`. Repo `linnoff88-dev/fotos3d`, autor `linnoff88-dev`. Versão inicial `v1.0.0`.
+Saída em `~/projetos/output/fotos3d/`. Keys carregadas em runtime de `~/projetos/wifi/.env`. Repo `linnoff88-dev/fotos3d`, autor `linnoff88-dev`. Versêo inicial `v1.0.0`.
 
 ## Modo 2: por assunto (adicionado 2026-09-14)
 

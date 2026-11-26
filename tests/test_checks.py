@@ -5,7 +5,7 @@ from engine.checks import checar, corrigir_ratio, seam_score
 
 
 def _gradiente_ciclico(w=1024, h=512):
-    # padrão que se repete em 360°: seno horizontal → borda esquerda == direita
+    # padrêo que se repete em 360°: seno horizontal → borda esquerda == direita
     x = np.linspace(0, 2 * np.pi, w, endpoint=False)
     linha = ((np.sin(x) + 1) * 127).astype(np.uint8)
     a = np.repeat(linha[None, :], h, axis=0)

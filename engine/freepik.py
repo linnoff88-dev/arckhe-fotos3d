@@ -1,4 +1,4 @@
-"""Geração via API Freepik/Magnific (assíncrona): Flux 2 Klein, GPT Image 2 Edit, upscaler."""
+"""Geraçêo via API Freepik/Magnific (assíncrona): Flux 2 Klein, GPT Image 2 Edit, upscaler."""
 from __future__ import annotations
 
 import base64

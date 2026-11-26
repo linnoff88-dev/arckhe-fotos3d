@@ -12,7 +12,7 @@ from .providers import DEFAULT, gerar
 def gerar_panorama(prompt: str, fotos: list[str | Path], *, modelo: str = DEFAULT, image_size: str = "2K") -> Image.Image:
     """Gera no ratio nativo do modelo e leva para 2:1 exato.
 
-    Modelos Gemini não têm 2:1 nativo: geramos 16:9 e reamostramos para 2:1
+    Modelos Gemini nêo têm 2:1 nativo: geramos 16:9 e reamostramos para 2:1
     (estiro horizontal de 12,5%, imperceptível numa equiretangular inferida).
     """
     img = gerar(prompt, fotos, modelo=modelo, image_size=image_size).convert("RGB")
